@@ -13,12 +13,12 @@ async def send_indefinitely(websocket, path):
     try:
         while True:
             await websocket.send(random_message)
-    except websockets.exception.ConnectionClosed:
+    except websockets.exceptions.ConnectionClosed:
         raise
-    except KeybordInterrupt:
+    except KeyboardInterrupt:
         return
     finally:
-        pass
+        return
 
 async def run_server(stop_flag):
     async with websockets.serve(send_indefinitely, "0.0.0.0", 8765, close_timeout=1, ping_interval=None, ping_timeout=None):

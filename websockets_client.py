@@ -54,15 +54,15 @@ async def batch_message_handler_gzip(websocket, num_messages=1000000, batch_size
 async def performance_test(batch_size, compression, num_messages):
     if batch_size == 1:
         if compression == "GZIP":
-            await base_performance_test(partial(single_message_handler, num_messages=num_messages))
+            await base_performance_test(partial(single_message_handler_gzip, num_messages=num_messages))
         elif compression == "None":
             await base_performance_test(partial(single_message_handler, num_messages=num_messages))
     elif batch_size > 1:
         if compression == "GZIP":
-            await base_performance_test(partial(single_message_handler, num_messages=num_messages,
+            await base_performance_test(partial(batch_message_handler_gzip, num_messages=num_messages,
                                                 batch_size=batch_size))
         elif compression == "None":
-            await base_performance_test(partial(single_message_handler, num_messages=num_messages,
+            await base_performance_test(partial(batch_message_handler, num_messages=num_messages,
                                                 batch_size=batch_size))
 
 

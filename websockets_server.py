@@ -25,6 +25,8 @@ async def basic_handler(websocket, path, handler=None, **kwargs):
         raise
     except KeyboardInterrupt:
         return
+    except Exception as e:
+        e
     finally:
         return
 
@@ -85,7 +87,7 @@ async def send_indefinitely_batch_gzip(websocket, path, params, batch_size=100, 
 
 
 async def send_indefinitely_batch_random(websocket, path, params, batch_size=100, message_size=100, **kwargs):
-    random_messages = get_random_messages(message_size, 1)
+    random_messages = get_random_messages(message_size, batch_size)
     random.seed(42)
     counter = 0
     batch = []
@@ -100,7 +102,7 @@ async def send_indefinitely_batch_random(websocket, path, params, batch_size=100
 
 
 async def send_indefinitely_batch_random_gzip(websocket, path, params, batch_size=100, message_size=100, **kwargs):
-    random_messages = get_random_messages(message_size, 1)
+    random_messages = get_random_messages(message_size, batch_size)
     random.seed(42)
     counter = 0
     batch = []

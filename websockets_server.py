@@ -165,7 +165,7 @@ def main(message_size, batch_size, random_message, compression):
     loop = asyncio.get_event_loop()
 
     stop = loop.create_future()
-    # loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
     loop.run_until_complete(run_server(stop, message_size, batch_size, random_message, compression))
 

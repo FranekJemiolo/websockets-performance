@@ -157,7 +157,8 @@ async def run_server(stop_flag, message_size, batch_size, random_message, compre
               is_flag=True)
 @click.option("--compression",
               help="Choose the type of compression for the message",
-              type=click.Choice(["None", "GZIP"], case_sensitive=False))
+              type=click.Choice(["None", "GZIP"], case_sensitive=False),
+              required=True)
 def main(message_size, batch_size, random_message, compression):
     loop = asyncio.get_event_loop()
 

@@ -72,7 +72,8 @@ async def performance_test(batch_size, compression, num_messages):
               default=1)
 @click.option("--compression",
               help="Choose the type of compression for the message",
-              type=click.Choice(["None", "GZIP"], case_sensitive=False))
+              type=click.Choice(["None", "GZIP"], case_sensitive=False),
+              required=True)
 @click.option("--num-messages",
               help="Number of messages on which you want to test the client",
               default=1000000)

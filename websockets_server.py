@@ -86,10 +86,11 @@ async def send_indefinitely_batch_gzip(websocket, path, params, batch_size=100, 
 
 async def send_indefinitely_batch_random(websocket, path, params, batch_size=100, message_size=100, **kwargs):
     random_messages = get_random_messages(message_size, 1)
+    random.seed(42)
     counter = 0
     batch = []
     while True:
-        random_message = random_messages[random.randint(0, batch_size - 1)]
+        random_message = random_messages[random.randrange(0, batch_size)]
         batch.append(base64.b64encode(random_message).decode("ascii"))
         counter += 1
         if counter == batch_size:
@@ -100,10 +101,11 @@ async def send_indefinitely_batch_random(websocket, path, params, batch_size=100
 
 async def send_indefinitely_batch_random_gzip(websocket, path, params, batch_size=100, message_size=100, **kwargs):
     random_messages = get_random_messages(message_size, 1)
+    random.seed(42)
     counter = 0
     batch = []
     while True:
-        random_message = random_messages[random.randint(0, batch_size - 1)]
+        random_message = random_messages[random.randrange(0, batch_size)]
         batch.append(base64.b64encode(random_message).decode("ascii"))
         counter += 1
         if counter == batch_size:

@@ -19,6 +19,8 @@ async def basic_handler(websocket, path, handler=None, **kwargs):
         raise
     except KeyboardInterrupt:
         return
+    except Exception as e:
+        e
     finally:
         return
 
@@ -29,27 +31,27 @@ async def basic_handler(websocket, path, handler=None, **kwargs):
 async def send_indefinitely_one(websocket, path, params, message_size=100, **kwargs):
     random_message = "a" * message_size
     while True:
-        await websocket.send(random_message)
+        await websocket.send(random_message.encode("ascii"))
 
 
 async def send_indefinitely_one_gzip(websocket, path, params, message_size=100, **kwargs):
     random_message = "a" * message_size
     while True:
-        await websocket.send(gzip.compress(random_message))
+        await websocket.send(gzip.compress(random_message.encode("ascii")))
 
 
 async def send_indefinitely_one_random(websocket, path, params, message_size=100, **kwargs):
     random.seed(42)
     while True:
         random_message = ''.join(random.choice(string.ascii_lowercase) for i in range(message_size))
-        await websocket.send(random_message)
+        await websocket.send(random_message.encode("ascii"))
 
 
 async def send_indefinitely_one_random_gzip(websocket, path, params, message_size=100, **kwargs):
     random.seed(42)
     while True:
         random_message = ''.join(random.choice(string.ascii_lowercase) for i in range(message_size))
-        await websocket.send(gzip.compress(random_message))
+        await websocket.send(gzip.compress(random_message.encode("ascii")))
 
 
 async def send_indefinitely_batch(websocket, path, params, batch_size=100, message_size=100, **kwargs):
@@ -57,7 +59,7 @@ async def send_indefinitely_batch(websocket, path, params, batch_size=100, messa
     counter = 0
     batch = []
     while True:
-        batch.append(base64.b64encode(random_message))
+        batch.append(base64.b64encode(random_message.encode("ascii")).decode("ascii"))
         counter += 1
         if counter == batch_size:
             await websocket.send(json.dumps(batch))
@@ -70,10 +72,10 @@ async def send_indefinitely_batch_gzip(websocket, path, params, batch_size=100, 
     counter = 0
     batch = []
     while True:
-        batch.append(base64.b64encode(random_message))
+        batch.append(base64.b64encode(random_message.encode("ascii")).decode("ascii"))
         counter += 1
         if counter == batch_size:
-            await websocket.send(gzip.compress(json.dumps(batch)))
+            await websocket.send(gzip.compress(json.dumps(batch).encode("ascii")))
             batch = []
             counter = 0
 
@@ -84,7 +86,7 @@ async def send_indefinitely_batch_random(websocket, path, params, batch_size=100
     batch = []
     while True:
         random_message = ''.join(random.choice(string.ascii_lowercase) for i in range(message_size))
-        batch.append(base64.b64encode(random_message))
+        batch.append(base64.b64encode(random_message.encode("ascii")).decode("ascii"))
         counter += 1
         if counter == batch_size:
             await websocket.send(json.dumps(batch))
@@ -98,10 +100,10 @@ async def send_indefinitely_batch_random_gzip(websocket, path, params, batch_siz
     batch = []
     while True:
         random_message = ''.join(random.choice(string.ascii_lowercase) for i in range(message_size))
-        batch.append(base64.b64encode(random_message))
+        batch.append(base64.b64encode(random_message.encode("ascii")).decode("ascii"))
         counter += 1
         if counter == batch_size:
-            await websocket.send(gzip.compress(json.dumps(batch)))
+            await websocket.send(gzip.compress(json.dumps(batch).encode("ascii")))
             batch = []
             counter = 0
 
@@ -163,7 +165,7 @@ def main(message_size, batch_size, random_message, compression):
     loop = asyncio.get_event_loop()
 
     stop = loop.create_future()
-    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+    # loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
     loop.run_until_complete(run_server(stop, message_size, batch_size, random_message, compression))
 

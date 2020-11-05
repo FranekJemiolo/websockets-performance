@@ -38,7 +38,7 @@ async def batch_message_handler(websocket, num_messages=1000000, batch_size=100,
     for i in range(math.ceil(float(num_messages) / batch_size)):
         raw_batch = await websocket.recv()
         batch = json.loads(raw_batch)
-        messages = [base64.standard_b64decode(raw_message) for raw_message in batch]
+        messages = [base64.b64decode(raw_message) for raw_message in batch]
         t.update(n=batch_size)
     t.close()
 
@@ -48,7 +48,7 @@ async def batch_message_handler_gzip(websocket, num_messages=1000000, batch_size
     for i in range(math.ceil(float(num_messages) / batch_size)):
         raw_batch = await websocket.recv()
         batch = json.loads(gzip.decompress(raw_batch))
-        messages = [base64.standard_b64decode(raw_message) for raw_message in batch]
+        messages = [base64.b64decode(raw_message) for raw_message in batch]
         t.update(n=batch_size)
     t.close()
 

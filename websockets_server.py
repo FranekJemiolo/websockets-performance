@@ -20,13 +20,12 @@ def get_random_messages(message_size, batch_size):
 async def basic_handler(websocket, path, handler=None, **kwargs):
     params = await websocket.recv()
     try:
-        await handler(websocket, path, params, **kwargs)
+        task = asyncio.create_task(handler(websocket, path, params, **kwargs))
+        await task
     except websockets.exceptions.ConnectionClosed:
         raise
     except KeyboardInterrupt:
         return
-    except Exception as e:
-        e
     finally:
         return
 
@@ -173,7 +172,7 @@ def main(message_size, batch_size, random_message, compression):
     loop = asyncio.get_event_loop()
 
     stop = loop.create_future()
-    # loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
     loop.run_until_complete(run_server(stop, message_size, batch_size, random_message, compression))
 

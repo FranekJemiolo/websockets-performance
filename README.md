@@ -27,10 +27,8 @@ Tested on i5-8250U CPU (4 cores, 1.60GHZ) with 1000000 messages.
 | false | GZIP | 100 | 160,000 msg/s |
 | true | None | 100 | 215,000 msg/s |
 | false | None | 100 | 330,000 msg/s |
-| true | GZIP | 1 | 14,200 msg/s |
-| false | GZIP | 1 | 14,200 msg/s |
-| true | None | 1 | 42,000 msg/s |
-| false | None | 1 | 42,000 msg/s |
+| true/false | GZIP | 1 | 14,200 msg/s |
+| true/false | None | 1 | 42,000 msg/s |
 
 Batching and no compression offers the best throughput when testing locally.
 When network connection becomes an issue I would suspect compression would lead to better results.

@@ -38,6 +38,7 @@ Additionally, a faster compression algorithm could be chosen, as GZIP is known t
 Given that the functions use only `await websocket.send()` multiple clients will not be able to stream data at the same time, unless the write buffer is full.
 This is done deliberately to test the throughput without additional throttling. 
 See: [https://websockets.readthedocs.io/en/stable/api.html#websockets.protocol.WebSocketCommonProtocol.send](https://websockets.readthedocs.io/en/stable/api.html#websockets.protocol.WebSocketCommonProtocol.send)
+
 If you want to see the performance with multiple clients connected, just add `await asyncio.sleep(0)` to the `while True:` loop.
 See: [https://github.com/python/asyncio/issues/284#issuecomment-154159149](https://github.com/python/asyncio/issues/284#issuecomment-154159149)
  
